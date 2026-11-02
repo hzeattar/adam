@@ -1,0 +1,40 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isValidTimestamp(val) {
+      return val is timestamp;
+    }
+
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow create, update: if isOwner(userId)
+        && request.resource.data.userId == userId
+        && request.resource.data.email is string
+        && (!('ecoPoints' in request.resource.data) || request.resource.data.ecoPoints is number)
+        && (!('totalCashEarnedEgp' in request.resource.data) || request.resource.data.totalCashEarnedEgp is number);
+      allow delete: if false;
+
+      match /pickup_orders/{orderId} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId)
+          && request.resource.data.userId == userId
+          && request.resource.data.deviceCategory is string
+          && request.resource.data.estimatedCashEgp is number
+          && request.resource.data.estimatedCashEgp >= 0
+          && request.resource.data.status in ['REQUESTED', 'COURIER_ASSIGNED', 'TESTED_AT_LAB', 'PAID_OUT'];
+        allow update: if isOwner(userId)
+          && request.resource.data.userId == userId;
+        allow delete: if false;
+      }
+    }
+  }
+}

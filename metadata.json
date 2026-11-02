@@ -1,0 +1,6 @@
+{
+  "name": "ReVive",
+  "description": "منصة ريفايف لإعادة تدوير المخلفات الإلكترونية والأجهزة القديمة في مصر، استخلاص الذهب والنحاس، بيع واستلام فوري عبر إنستاباي، ومتجر أجهزة مجددة بضمان معتمد.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

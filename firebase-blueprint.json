@@ -1,0 +1,39 @@
+{
+  "entities": {
+    "users": {
+      "path": "users/{userId}",
+      "description": "User profile with eco points, cash earnings, and e-waste stats",
+      "fields": {
+        "userId": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "phoneNumber": { "type": "string" },
+        "ecoPoints": { "type": "number" },
+        "totalCashEarnedEgp": { "type": "number" },
+        "totalEwasteRecycledKg": { "type": "number" },
+        "createdAt": { "type": "timestamp" },
+        "updatedAt": { "type": "timestamp" }
+      }
+    },
+    "pickup_orders": {
+      "path": "users/{userId}/pickup_orders/{orderId}",
+      "description": "Doorstep e-waste pickup orders and payout statuses",
+      "fields": {
+        "orderId": { "type": "string" },
+        "userId": { "type": "string" },
+        "deviceCategory": { "type": "string" },
+        "brand": { "type": "string" },
+        "modelName": { "type": "string" },
+        "condition": { "type": "string" },
+        "estimatedCashEgp": { "type": "number" },
+        "payoutMethod": { "type": "string" },
+        "payoutAccount": { "type": "string" },
+        "city": { "type": "string" },
+        "address": { "type": "string" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "timestamp" },
+        "updatedAt": { "type": "timestamp" }
+      }
+    }
+  }
+}

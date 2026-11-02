@@ -1,0 +1,8 @@
+{
+  "firestore": [
+    {
+      "database": "ai-studio-android-revive-a6a19489-ad18-4aa4-849d-83ad2d0e8c10",
+      "rules": "firestore.rules"
+    }
+  ]
+}
