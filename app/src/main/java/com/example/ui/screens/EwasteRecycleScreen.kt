@@ -52,13 +52,15 @@ fun EwasteRecycleScreen(
         repository.calculateValuation(selectedCategory, selectedBrand, modelText, selectedCondition)
     }
 
-    val popularBrands = when (selectedCategory) {
-        DeviceCategory.SMARTPHONES -> listOf("Apple", "Samsung", "Xiaomi", "Oppo", "Realme", "Google Pixel")
-        DeviceCategory.LAPTOPS_PCS -> listOf("Apple (MacBook)", "Dell", "Lenovo (ThinkPad)", "HP", "Asus", "Acer")
-        DeviceCategory.TABLETS -> listOf("Apple (iPad)", "Samsung Galaxy Tab", "Huawei", "Lenovo Tab")
-        DeviceCategory.PCBS_COMPONENTS -> listOf("Nvidia GPU", "Intel CPU", "Motherboards", "RAM Modules", "Server PCBs")
-        DeviceCategory.BATTERIES_POWER -> listOf("Anker", "Joyroom", "Laptop Batteries", "UPS Lead-Acid", "Li-ion Packs")
-        DeviceCategory.CABLES_CHARGERS -> listOf("Apple Original", "Type-C High Wattage", "Mixed E-Scrap Cables", "Charger Bricks")
+    val popularBrands = remember(selectedCategory) {
+        when (selectedCategory) {
+            DeviceCategory.SMARTPHONES -> listOf("Apple", "Samsung", "Xiaomi", "Oppo", "Realme", "Google Pixel")
+            DeviceCategory.LAPTOPS_PCS -> listOf("Apple (MacBook)", "Dell", "Lenovo (ThinkPad)", "HP", "Asus", "Acer")
+            DeviceCategory.TABLETS -> listOf("Apple (iPad)", "Samsung Galaxy Tab", "Huawei", "Lenovo Tab")
+            DeviceCategory.PCBS_COMPONENTS -> listOf("Nvidia GPU", "Intel CPU", "Motherboards", "RAM Modules", "Server PCBs")
+            DeviceCategory.BATTERIES_POWER -> listOf("Anker", "Joyroom", "Laptop Batteries", "UPS Lead-Acid", "Li-ion Packs")
+            DeviceCategory.CABLES_CHARGERS -> listOf("Apple Original", "Type-C High Wattage", "Mixed E-Scrap Cables", "Charger Bricks")
+        }
     }
 
     LazyColumn(

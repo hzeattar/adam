@@ -2,8 +2,11 @@ package com.example
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -88,6 +91,11 @@ fun ReViveEwasteApp(repository: EwasteRepository) {
         var pendingCash by remember { mutableStateOf(5400.0) }
 
         val impactStats by repository.impactStats.collectAsState()
+
+        // Predictive Back Navigation: Return to Home Recycle tab before exiting
+        BackHandler(enabled = currentTab != EwasteTab.RECYCLE_CALCULATOR) {
+            currentTab = EwasteTab.RECYCLE_CALCULATOR
+        }
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -223,31 +231,41 @@ fun ReViveEwasteApp(repository: EwasteRepository) {
                     .fillMaxSize()
                     .padding(innerPadding)
             ) {
-                when (currentTab) {
-                    EwasteTab.RECYCLE_CALCULATOR -> {
-                        EwasteRecycleScreen(
-                            repository = repository,
-                            onRequestPickup = { cat, brand, model, cond, cash ->
-                                pendingCategory = cat
-                                pendingBrand = brand
-                                pendingModel = model
-                                pendingCondition = cond
-                                pendingCash = cash
-                                showPickupDialog = true
-                            }
-                        )
-                    }
-                    EwasteTab.DROP_OFF_KIOSKS -> {
-                        DropOffMapScreen(repository = repository)
-                    }
-                    EwasteTab.REFURB_STORE -> {
-                        RefurbishedStoreScreen(repository = repository)
-                    }
-                    EwasteTab.WALLET_IMPACT -> {
-                        WalletAndImpactScreen(repository = repository)
-                    }
-                    EwasteTab.API_INTEGRATOR -> {
-                        ApiIntegratorScreen()
+                // High-performance animated tab transitions (200ms spring crossfade)
+                AnimatedContent(
+                    targetState = currentTab,
+                    transitionSpec = {
+                        (fadeIn(animationSpec = tween(200)) + scaleIn(initialScale = 0.98f, animationSpec = tween(200)))
+                            .togetherWith(fadeOut(animationSpec = tween(140)))
+                    },
+                    label = "tab_smooth_transition"
+                ) { targetTab ->
+                    when (targetTab) {
+                        EwasteTab.RECYCLE_CALCULATOR -> {
+                            EwasteRecycleScreen(
+                                repository = repository,
+                                onRequestPickup = { cat, brand, model, cond, cash ->
+                                    pendingCategory = cat
+                                    pendingBrand = brand
+                                    pendingModel = model
+                                    pendingCondition = cond
+                                    pendingCash = cash
+                                    showPickupDialog = true
+                                }
+                            )
+                        }
+                        EwasteTab.DROP_OFF_KIOSKS -> {
+                            DropOffMapScreen(repository = repository)
+                        }
+                        EwasteTab.REFURB_STORE -> {
+                            RefurbishedStoreScreen(repository = repository)
+                        }
+                        EwasteTab.WALLET_IMPACT -> {
+                            WalletAndImpactScreen(repository = repository)
+                        }
+                        EwasteTab.API_INTEGRATOR -> {
+                            ApiIntegratorScreen()
+                        }
                     }
                 }
             }
